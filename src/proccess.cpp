@@ -105,3 +105,14 @@ public:
               std::vector<std::unique_ptr<ExprAST>> Args)
     : Callee(Callee), Args(std::move(Args)) {}
 };
+// PrototypeAST
+class PrototypeAST {
+  std::string Name;
+  std::vector<std::string> Args;
+public:
+
+}
+// funcAST for declaring and defining functions
+class funcAST {
+  std::unique_ptr<Prototype>
+}
