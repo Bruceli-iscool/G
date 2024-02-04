@@ -52,6 +52,56 @@ static int getok() {
     if (lastChar == '/') {
         do
          lastChar = getchar();
-        while (lastChar != EOF && lastChar != '\n')
+        while (lastChar != EOF && lastChar != '\n' && lastChar != '\r');
+        if (lastChar != EOF)
+          return getok();
+         
     }
+    // handle exeptions
+    if (lastChar == EOF)
+      return tok_eof;
+    // return ascii value
+    int thisChar = lastChar;
+    lastChar = getchar();
+    return thisChar;
 }
+
+// abstract syntax tree
+// ExprAST - base class
+class ExprAST {
+public:
+  virtual ~ExprAST() = default;
+};
+
+// NumExprAst for proccessing numbers
+class NumExprAST : public ExprAST {
+  double Val;
+public:
+  NumExprAST(double Val) : Val(Val) {}
+};
+// VarExprAST for proccessing variables
+class VarExprAST : public ExprAST {
+  std::string Name;
+
+public:
+  VarExprAST(const std::string&Name) : Name(Name) {}
+  
+};
+// BinExprAST for proccessing binary operators
+class BinExprAST : public ExprAST {
+  char Op;
+  std::unique_ptr<ExprAST> LHS, RHS;
+public:
+  BinaryExprAST(char Op, std::unique_ptr<ExprAST> LHS,
+                std::unique_ptr<ExprAST> RHS)
+    : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
+};
+// CallExprAST function calls
+class CallExprAST : public ExprAST {
+  std::string Callee;
+  std::vector<std::unique_ptr<ExprAst>> Args;
+public:
+  CallExprAST(const std::string&Callee,
+              std::vector<std::unique_ptr<ExprAST>> Args)
+    : Callee(Callee), Args(std::move(Args)) {}
+};
