@@ -67,6 +67,7 @@ static int getok() {
 }
 
 // abstract syntax tree
+namespace {
 // ExprAST - base class
 class ExprAST {
 public:
@@ -110,9 +111,50 @@ class PrototypeAST {
   std::string Name;
   std::vector<std::string> Args;
 public:
-
-}
+  PrototypeAST(const std::string&Name, std::vector<std::string> Args
+    : Name(Name), Args(std::move(Args))) {}
+  const std::string &getName() const { return Name; }
+};
 // funcAST for declaring and defining functions
 class funcAST {
-  std::unique_ptr<Prototype>
+  std::unique_ptr<PrototypeAST> Proto;
+  std::unique_ptr<ExprAST> Body;
+
+public:
+  funcAST(std::unique_ptr<PrototypeAST> Proto,
+          std::unique_ptr<ExprAST> Body)
+    : Proto(std::move(Proto)), Body(std::move(Body)) {}
+};
 }
+// parse
+static int CurTok;
+static int getNTok() {
+  return CurTok == getok();
+}
+// error handling
+std::unique_ptr<ExprAST> LogError(const char *Str) {
+  fprintf(stderr, "G: Error %s\n", Str);
+  return nullptr;
+}
+std::unique_ptr<PrototypeAST> LogErrorP(const char *Str) {
+  LogError(Str);
+  return nullptr;
+}
+// parse numbers
+statuc std::unique_ptr<ExprAST> ParseNumExpr() {
+  auto Result = std::unique_ptr<NumExprAST>(NumVal);
+  getNTok();
+  return std::move(Result);
+}
+// parse parentisies
+static std::unique_ptr<ExprAST> ParseParenExpr() {
+  getNTOk();
+  auto V = ParseExpression()
+  if(!V)
+    return nullptr;
+  if (CurTok != ')')
+    return LogError("expected ')'");
+  getNTok();
+  return V;
+}
+static std::unique_ptr<ExprAST>
