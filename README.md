@@ -1,2 +1,2 @@
 # G
- A high-level programming language
+A terribly designed high-level programing language. You can can do nothing with it. It's just for my enjoyment of being cool. Of course, this language is not designed to be good. It's designed to be diffrerent. I name it something formal so people would try to use it, then quit afterwards because it's stupid. All of the simplicity might become complicated, but I want it to be. It's fun to use it for pure torture of yourself, but not for practical uses like making apps.
